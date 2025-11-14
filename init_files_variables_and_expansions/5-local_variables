@@ -1,2 +1,2 @@
 #!/bin/bash
-bash -c $'declare -p\ndeclare -f'
+{ declare -p; declare -F; }
