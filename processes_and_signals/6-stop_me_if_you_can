@@ -1,10 +1,4 @@
 #!/usr/bin/env bash
-# Script that stops the 4-to_infinity_and_beyond process without using kill or killall
 
-PID="$(pgrep -f 4-to_infinity_and_beyond)"
-
-if [ -n "$PID" ]; then
-    # Send SIGTERM by writing directly to /proc (allowed and not kill/killall)
-    echo 15 > "/proc/$PID/ctl" 2>/dev/null
-fi
+pkill -f 4-to_infinity_and_beyond
 
