@@ -1,9 +1,15 @@
 #!/usr/bin/env bash
-# This script writes its PID to a file, handles signals, and prints messages
+# This script writes its PID to /var/run/myscript.pid, handles signals, and prints messages
 
 PID_FILE="/var/run/myscript.pid"
 
-# Create the PID file immediately
+# Ensure we can write to /var/run
+if ! touch "$PID_FILE" 2>/dev/null; then
+    echo "Error: Cannot create $PID_FILE. Try running as root."
+    exit 1
+fi
+
+# Write the PID
 echo $$ > "$PID_FILE"
 
 # Function to handle SIGTERM
@@ -23,7 +29,7 @@ sigquit_cleanup() {
 trap sigterm_message SIGTERM
 trap sigquit_cleanup SIGQUIT
 
-# Infinite loop printing message
+# Infinite loop
 while true; do
     echo "To infinity and beyond"
     sleep 1
