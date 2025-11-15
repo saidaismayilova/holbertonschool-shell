@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-
-# Creates a PID file, displays messages indefinitely, and handles signals appropriately
+# This script creates a PID file, displays messages indefinitely, and handles signals appropriately
 
 # Create PID file
 echo $$ > /var/run/myscript.pid
