@@ -1,34 +1,30 @@
 #!/usr/bin/env bash
+# This script writes its PID to /var/run/myscript.pid and handles signals
 
-# Create PID file
-echo $$ > /var/run/myscript.pid
+PID_FILE="/var/run/myscript.pid"
 
-# Signal handler for SIGTERM
-term_handler() {
+# Write the PID immediately
+echo $$ > "$PID_FILE"
+
+# Function to handle SIGTERM: print message and terminate
+sigterm_message() {
     echo "I hate the kill command"
-    rm -f /var/run/myscript.pid
+    rm -f "$PID_FILE"
     exit 0
 }
 
-# Signal handler for SIGINT (Ctrl+C)
-int_handler() {
-    echo "Y U no love me?!"
-}
-
-# Signal handler for SIGQUIT and SIGTERM (clean exit)
-quit_handler() {
-    rm -f /var/run/myscript.pid
+# Function to handle SIGQUIT: cleanup and terminate
+sigquit_cleanup() {
+    rm -f "$PID_FILE"
     exit 0
 }
 
-# Trap the signals
-trap term_handler SIGTERM
-trap int_handler SIGINT
-trap quit_handler SIGQUIT
+# Trap signals
+trap sigterm_message SIGTERM
+trap sigquit_cleanup SIGQUIT
 
-# Infinite loop
-while true
-do
+# Infinite loop printing message
+while true; do
     echo "To infinity and beyond"
     sleep 1
 done
