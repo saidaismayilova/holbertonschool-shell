@@ -3,7 +3,7 @@
 
 PID_FILE="/var/run/myscript.pid"
 
-# Write the script's PID to the PID file
+# Create the PID file immediately
 echo $$ > "$PID_FILE"
 
 # Function to handle SIGTERM
