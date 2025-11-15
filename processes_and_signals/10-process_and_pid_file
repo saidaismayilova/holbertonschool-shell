@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # This script writes its PID to a file, handles signals, and prints messages
 
-PID_FILE="/tmp/myscript.pid"  # Changed from /var/run/myscript.pid
+PID_FILE="/tmp/myscript.pid"
 
 # Write PID immediately
 echo $$ > "$PID_FILE"
 
-# Function to handle SIGTERM
+# Handle SIGTERM
 sigterm_message() {
     echo "I hate the kill command"
     rm -f "$PID_FILE"
     exit 0
 }
 
-# Function to handle SIGQUIT
+# Handle SIGQUIT
 sigquit_cleanup() {
     rm -f "$PID_FILE"
     exit 0
