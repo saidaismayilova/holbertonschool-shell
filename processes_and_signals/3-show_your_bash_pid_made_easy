@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Display PID and process name for processes containing 'bash'
+
+for pid in /proc/[0-9]*; do
+    if [ -r "$pid/comm" ]; then
+        name=$(<"$pid/comm")
+        case $name in
+            *bash*) echo "${pid#/proc/} $name" ;;
+        esac
+    fi
+done
+

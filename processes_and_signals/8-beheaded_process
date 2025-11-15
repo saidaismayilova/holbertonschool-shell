@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Kill all running instances of 7-highlander
+
+# Find all PIDs of 7-highlander and send SIGKILL
+pkill -9 -f 7-highlander
+
