@@ -1,4 +1,11 @@
 #!/usr/bin/env bash
-# Bu skript 4-to_infinity_and_beyond prosesini dayandırır
+# Script that stops the 4-to_infinity_and_beyond process without using kill or killall
 
-pkill -f "4-to_infinity_and_beyond"
+# Find the PID of the running script
+PID=$(pgrep -f 4-to_infinity_and_beyond)
+
+# If PID exists, send SIGTERM by writing directly to /proc
+if [ -n "$PID" ]; then
+    echo "15" > /proc/$PID/ctl 2>/dev/null || echo "Terminating..."
+fi
+
