@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+# This script lists current directory files and displays only the part after the first dash
+for file in *
+do
+    # Skip hidden files (already handled by *)
+    # Extract part after first dash
+    echo "$file" | cut -d '-' -f 2-
+done
