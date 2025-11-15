@@ -1,15 +1,9 @@
 #!/usr/bin/env bash
-# This script writes its PID to /var/run/myscript.pid, handles signals, and prints messages
+# This script writes its PID to a file, handles signals, and prints messages
 
-PID_FILE="/var/run/myscript.pid"
+PID_FILE="/tmp/myscript.pid"
 
-# Ensure we can write to /var/run
-if ! touch "$PID_FILE" 2>/dev/null; then
-    echo "Error: Cannot create $PID_FILE. Try running as root."
-    exit 1
-fi
-
-# Write the PID
+# Write the PID immediately
 echo $$ > "$PID_FILE"
 
 # Function to handle SIGTERM
