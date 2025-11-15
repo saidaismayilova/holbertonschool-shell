@@ -1,32 +1,29 @@
 #!/usr/bin/env bash
+# This script writes its PID to a file, handles signals, and prints messages
 
 PID_FILE="/var/run/myscript.pid"
 
 # Write the script's PID to the PID file
 echo $$ > "$PID_FILE"
 
-# Function to handle SIGTERM for a message only
+# Function to handle SIGTERM
 sigterm_message() {
     echo "I hate the kill command"
+    rm -f "$PID_FILE"
+    exit 0
 }
 
-# Function to handle SIGINT
-sigint_message() {
-    echo "Y U no love me?!"
-}
-
-# Function to handle SIGQUIT or SIGTERM for cleanup
-cleanup() {
+# Function to handle SIGQUIT
+sigquit_cleanup() {
     rm -f "$PID_FILE"
     exit 0
 }
 
 # Trap signals
 trap sigterm_message SIGTERM
-trap sigint_message SIGINT
-trap cleanup SIGQUIT
+trap sigquit_cleanup SIGQUIT
 
-# Infinite loop
+# Infinite loop printing message
 while true; do
     echo "To infinity and beyond"
     sleep 1
