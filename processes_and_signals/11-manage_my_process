@@ -1,33 +1,36 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # File: 11-manage_my_process
+# Init-style script
 
 PID_FILE="/var/run/my_process.pid"
-SCRIPT_PATH="/path/to/manage_my_process"  # replace with the correct path
+SCRIPT_PATH="$(pwd)/manage_my_process"  # Use full path to avoid issues
+
+start() {
+    if [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
+        # Already running
+        return 0
+    fi
+    "$SCRIPT_PATH" &        # Start in background
+    echo $! > "$PID_FILE"   # Save PID
+}
+
+stop() {
+    if [ -f "$PID_FILE" ]; then
+        kill "$(cat "$PID_FILE")" 2>/dev/null
+        rm -f "$PID_FILE"
+    fi
+}
+
+restart() {
+    stop
+    sleep 1
+    start
+}
 
 case "$1" in
-    start)
-        $SCRIPT_PATH &
-        echo $! > "$PID_FILE"
-        echo "manage_my_process started"
-        ;;
-    stop)
-        if [ -f "$PID_FILE" ]; then
-            kill "$(cat $PID_FILE)"
-            rm -f "$PID_FILE"
-        fi
-        echo "manage_my_process stopped"
-        ;;
-    restart)
-        if [ -f "$PID_FILE" ]; then
-            kill "$(cat $PID_FILE)"
-            rm -f "$PID_FILE"
-        fi
-        $SCRIPT_PATH &
-        echo $! > "$PID_FILE"
-        echo "manage_my_process restarted"
-        ;;
-    *)
-        echo "Usage: manage_my_process {start|stop|restart}"
-        ;;
+    start)   start ;;
+    stop)    stop ;;
+    restart) restart ;;
+    *) echo "Usage: $0 {start|stop|restart}" ;;
 esac
 

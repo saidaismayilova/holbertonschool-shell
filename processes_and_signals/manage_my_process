@@ -1,5 +1,6 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # File: manage_my_process
+# This process writes "I am alive!" to /tmp/my_process every 2 seconds
 
 while true; do
     echo "I am alive!" >> /tmp/my_process
