@@ -23,9 +23,12 @@ stop() {
 }
 
 restart() {
-    stop
-    sleep 1
-    start
+    if [ -f "$PID_FILE" ]; then
+        kill "$(cat "$PID_FILE")" 2>/dev/null
+        rm -f "$PID_FILE"
+    fi
+    "$SCRIPT_PATH" &          # Start in background
+    echo $! > "$PID_FILE"
     echo "manage_my_process restarted"
 }
 
