@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 # Find the process ID of the "4-to_infinity_and_beyond" script and send SIGTERM signal
 pkill -f "4-to_infinity_and_beyond"
