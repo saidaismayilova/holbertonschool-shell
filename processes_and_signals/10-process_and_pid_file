@@ -1,18 +1,22 @@
 #!/usr/bin/env bash
 # Create a PID file, handle signals, and print messages indefinitely
 
-# Create the PID file
-echo $$ > /var/run/myscript.pid
+# Use /tmp for PID file (safer in test environment)
+PIDFILE="/tmp/myscript.pid"
 
-# Function to handle SIGTERM and SIGQUIT: delete PID file and terminate
+# Create the PID file
+echo $$ > "$PIDFILE"
+
+# Function to terminate: delete PID file and exit
 terminate() {
-    rm -f /var/run/myscript.pid
+    rm -f "$PIDFILE"
     exit 0
 }
 
-# Function to handle SIGTERM for message only
-sigterm_message() {
+# Function to handle SIGTERM: print message, then terminate
+sigterm_handler() {
     echo "I hate the kill command"
+    terminate
 }
 
 # Function to handle SIGINT (Ctrl+C)
@@ -21,7 +25,7 @@ sigint_handler() {
 }
 
 # Trap signals
-trap sigterm_message SIGTERM
+trap sigterm_handler SIGTERM
 trap terminate SIGQUIT
 trap sigint_handler SIGINT
 
