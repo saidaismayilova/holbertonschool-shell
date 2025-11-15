@@ -1,3 +1,9 @@
 #!/usr/bin/env bash
 # This script stops the 4-to_infinity_and_beyond process
-ps waux | grep '4-to_infinity_and_beyond' | grep -v grep | wc -l
+
+# Stop the process
+pkill -f "4-to_infinity_and_beyond"
+
+# Optional: check remaining processes (without using grep|wc)
+# pgrep -f "4-to_infinity_and_beyond"
+
