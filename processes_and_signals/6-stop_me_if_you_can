@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
-# Stop without kill/killall
+# Stop 4-to_infinity_and_beyond without using kill or killall
 
-PID=$(pgrep -f "4-to_infinity_and_beyond")
-echo -ne '\003' > /proc/$PID/fd/0
+pkill -INT -f "4-to_infinity_and_beyond"
 
