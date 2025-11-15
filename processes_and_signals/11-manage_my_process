@@ -2,14 +2,14 @@
 # File: 11-manage_my_process
 # Init-style script to manage the manage_my_process daemon
 
-PID_FILE="/var/run/my_process.pid"
-SCRIPT_PATH="$(pwd)/manage_my_process"  # full path to the process
+PID_FILE="/tmp/my_process.pid"
+SCRIPT_PATH="$(pwd)/manage_my_process"
 
 start() {
     if [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
         return 0
     fi
-    "$SCRIPT_PATH" &        # start in background
+    "$SCRIPT_PATH" &
     echo $! > "$PID_FILE"
     echo "manage_my_process started"
 }
@@ -27,7 +27,7 @@ restart() {
         kill "$(cat "$PID_FILE")" 2>/dev/null
         rm -f "$PID_FILE"
     fi
-    "$SCRIPT_PATH" &          # Start in background
+    "$SCRIPT_PATH" &
     echo $! > "$PID_FILE"
     echo "manage_my_process restarted"
 }
