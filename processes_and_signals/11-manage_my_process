@@ -1,17 +1,17 @@
-#!/bin/bash
+#!/usr/bin/env bash
 # File: 11-manage_my_process
-# Init-style script
+# Init-style script to manage the manage_my_process daemon
 
 PID_FILE="/var/run/my_process.pid"
-SCRIPT_PATH="$(pwd)/manage_my_process"  # Use full path to avoid issues
+SCRIPT_PATH="$(pwd)/manage_my_process"  # full path to the process
 
 start() {
     if [ -f "$PID_FILE" ] && kill -0 "$(cat "$PID_FILE")" 2>/dev/null; then
-        # Already running
         return 0
     fi
-    "$SCRIPT_PATH" &        # Start in background
-    echo $! > "$PID_FILE"   # Save PID
+    "$SCRIPT_PATH" &        # start in background
+    echo $! > "$PID_FILE"
+    echo "manage_my_process started"
 }
 
 stop() {
@@ -19,18 +19,20 @@ stop() {
         kill "$(cat "$PID_FILE")" 2>/dev/null
         rm -f "$PID_FILE"
     fi
+    echo "manage_my_process stopped"
 }
 
 restart() {
     stop
     sleep 1
     start
+    echo "manage_my_process restarted"
 }
 
 case "$1" in
     start)   start ;;
     stop)    stop ;;
     restart) restart ;;
-    *) echo "Usage: $0 {start|stop|restart}" ;;
+    *) echo "Usage: manage_my_process {start|stop|restart}" ;;
 esac
 
